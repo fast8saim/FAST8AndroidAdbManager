@@ -3,7 +3,6 @@ import tkinter
 from tkinter import ttk
 import urllib.request
 import zipfile
-import os
 
 
 def download_tools():
@@ -31,9 +30,7 @@ def create_button(app_form, button_text, button_column, button_row, button_width
 
 
 def start_adb_service():
-    script_dir = os.getcwd()
-    result = run_command(f'adb start-server')
-    print(result)
+    result = run_command(f'adb devices')
     success = False
     if result == []:
         success = True
@@ -46,6 +43,12 @@ def start_adb_service():
         print('ADB started')
 
 
+def download_list_packages():
+    result = run_command(f'adb shell pm list packages')
+    for i in result:
+        print(i)
+
+
 root = tkinter.Tk()
 root.title("FAST8 android ADB manager ")
 form = ttk.Frame(root, padding=5)
@@ -53,5 +56,6 @@ form.grid()
 
 create_button(form, "Скачать и установить ADВ", 1, 1, 30, download_tools)
 create_button(form, "Запустить службу ADВ", 1, 2, 30, start_adb_service)
+create_button(form, "Получить с устройства список установленных пакетов", 1, 3, 30, download_list_packages)
 
 root.mainloop()
