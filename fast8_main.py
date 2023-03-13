@@ -14,11 +14,11 @@ def download_tools():
     zfile.extractall('platform-tools')
 
 
-def run_command(exec_command):
+def run_command_with_stdout(exec_command):
     process = subprocess.Popen(exec_command, stdout=subprocess.PIPE)
-    process.wait()
+    result = process.communicate()
 
-    return process.stdout.readlines()
+    return result[0].decode().split('\n')
 
 
 def create_button(app_form, button_text, button_column, button_row, button_width, button_command):
@@ -30,21 +30,19 @@ def create_button(app_form, button_text, button_column, button_row, button_width
 
 
 def start_adb_service():
-    result = run_command(f'adb devices')
+    result = run_command_with_stdout(f'adb devices')
+    print(result)
     success = False
-    if result == []:
-        success = True
-    else:
-        for i in result:
-            if i.find('daemon started successfully'.encode()) != -1:
-                success = True
+    for i in result:
+        if i.find('daemon started successfully') != -1:
+            success = True
 
     if success:
         print('ADB started')
 
 
 def download_list_packages():
-    result = run_command(f'adb shell pm list packages')
+    result = run_command_with_stdout(f'adb shell pm list packages')
     for i in result:
         print(i)
 
