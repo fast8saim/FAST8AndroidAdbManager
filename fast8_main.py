@@ -47,12 +47,12 @@ def download_list_packages():
         print(i)
 
 
-def create_base_list(app_form, root):
+def create_package_list(app_form, root):
     listbox = ttk.Treeview(app_form, show="headings", columns=("#1", "#2", "#3"), height=15)
-    listbox.column("#1", width=100)
-    listbox.column("#2", width=200)
-    listbox.column("#3", width=50)
-    listbox.grid(column=1, row=2, rowspan=15)
+    listbox.column("#1", width=300)
+    listbox.column("#2", width=400)
+    listbox.column("#3", width=80)
+    listbox.grid(column=2, row=3, rowspan=15)
     listbox.heading("#1", text="Пакет")
     listbox.heading("#2", text="Наименование")
     listbox.heading("#3", text="Бесполезный")
@@ -68,9 +68,16 @@ root.title("FAST8 android ADB manager ")
 form = ttk.Frame(root, padding=5)
 form.grid()
 
-create_base_list(form, root)
-create_button(form, "Скачать и установить ADВ", 1, 1, 40, download_tools)
-create_button(form, "Запустить службу ADВ", 2, 1, 30, start_adb_service)
-create_button(form, "Получить с устройства список установленных пакетов", 3, 1, 50, download_list_packages)
+label_frame1 = ttk.LabelFrame(root, text='Команды')
+label_frame1.grid(column=1, row=1)
+
+label_frame2 = ttk.LabelFrame(root, text='Пакеты')
+label_frame2.grid(column=1, row=2)
+
+create_button(label_frame1, "Скачать и установить ADВ", 1, 1, 40, download_tools)
+create_button(label_frame1, "Запустить службу ADВ", 2, 1, 30, start_adb_service)
+create_button(label_frame1, "Получить с устройства список установленных пакетов", 3, 1, 50, download_list_packages)
+
+create_package_list(label_frame2, root)
 
 root.mainloop()
